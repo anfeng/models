@@ -25,7 +25,7 @@ import tensorflow as tf
 import dataset
 
 
-class Model(tf.keras.Model):
+class Model(object):
   """Model to recognize digits in the MNIST dataset.
 
   Network structure is equivalent to:
@@ -45,7 +45,6 @@ class Model(tf.keras.Model):
         typically faster on CPUs. See
         https://www.tensorflow.org/performance/performance_guide#data_formats
     """
-    super(Model, self).__init__()
     if data_format == 'channels_first':
       self._input_shape = [-1, 1, 28, 28]
     else:
@@ -191,7 +190,10 @@ def main(unused_argv):
     # randomness, while smaller sizes use less memory. MNIST is a small
     # enough dataset that we can easily shuffle the full epoch.
     ds = dataset.train(FLAGS.data_dir)
-    ds = ds.cache().shuffle(buffer_size=50000).batch(FLAGS.batch_size).repeat(
+    if FLAGS.cache_spec is not None:
+        print('mnist dataset will be cached: %s' % FLAGS.cache_spec)
+        ds = ds.cache(FLAGS.cache_spec)
+    ds = ds.shuffle(buffer_size=50000).batch(FLAGS.batch_size).repeat(
         FLAGS.train_epochs)
     return ds
 
@@ -232,6 +234,11 @@ class MNISTArgParser(argparse.ArgumentParser):
         type=int,
         default=100,
         help='Number of images to process in a batch')
+    self.add_argument(
+        '--cache_spec',
+        type=str,
+        default=None,
+        help='whether MNIST dataset should be cached or not.')
     self.add_argument(
         '--data_dir',
         type=str,

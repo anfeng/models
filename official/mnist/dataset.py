@@ -77,11 +77,14 @@ def download(directory, filename):
 
 
 def dataset(directory, images_file, labels_file):
-  images_file = download(directory, images_file)
-  labels_file = download(directory, labels_file)
-
-  check_image_file_header(images_file)
-  check_labels_file_header(labels_file)
+  if not directory.startswith("s3:"):
+    images_file = download(directory, images_file)
+    labels_file = download(directory, labels_file)
+    check_image_file_header(images_file)
+    check_labels_file_header(labels_file)
+  else:
+    images_file = directory + '/' + images_file
+    labels_file = directory + '/' + labels_file
 
   def decode_image(image):
     # Normalize from [0, 255] to [0.0, 1.0]
