@@ -282,6 +282,60 @@ Evaluation results:
 	{'loss': 0.021325123, 'global_step': 14631, 'accuracy': 0.9933}
 ```
 
+When you use file cache, later jobs will be able to reuse your cache. The following execution, for example, doesn't have any AWS related entries during training phase.
+
+```
+$ python mnist.py --train_epochs 2 --data_dir=s3://mnist-andyf/ --cache_spec "/tmp/cache"
+INFO:tensorflow:Using default config.
+INFO:tensorflow:Using config: {'_save_checkpoints_secs': 600, '_session_config': None, '_keep_checkpoint_max': 5, '_task_type': 'worker', '_global_id_in_cluster': 0, '_is_chief': True, '_cluster_spec': <tensorflow.python.training.server_lib.ClusterSpec object at 0x11d2a3210>, '_evaluation_master': '', '_save_checkpoints_steps': None, '_keep_checkpoint_every_n_hours': 10000, '_service': None, '_num_ps_replicas': 0, '_tf_random_seed': None, '_master': '', '_num_worker_replicas': 1, '_task_id': 0, '_log_step_count_steps': 100, '_model_dir': '/tmp/mnist_model', '_save_summary_steps': 100}
+mnist dataset will be cached: /tmp/cache
+INFO:tensorflow:Calling model_fn.
+INFO:tensorflow:Done calling model_fn.
+INFO:tensorflow:Create CheckpointSaverHook.
+INFO:tensorflow:Graph was finalized.
+2018-03-12 11:38:37.671015: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+INFO:tensorflow:Restoring parameters from /tmp/mnist_model/model.ckpt-23031
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+INFO:tensorflow:Saving checkpoints for 23032 into /tmp/mnist_model/model.ckpt.
+INFO:tensorflow:train_accuracy = 1.0
+INFO:tensorflow:loss = 0.0071553458, step = 23032
+INFO:tensorflow:global_step/sec: 8.61573
+INFO:tensorflow:train_accuracy = 0.995 (11.607 sec)
+INFO:tensorflow:loss = 0.054765362, step = 23132 (11.607 sec)
+INFO:tensorflow:global_step/sec: 8.52085
+INFO:tensorflow:train_accuracy = 0.99666667 (11.736 sec)
+INFO:tensorflow:loss = 4.2091096e-06, step = 23232 (11.736 sec)
+INFO:tensorflow:global_step/sec: 8.38499
+INFO:tensorflow:train_accuracy = 0.9975 (11.926 sec)
+INFO:tensorflow:loss = 0.00023929411, step = 23332 (11.926 sec)
+INFO:tensorflow:global_step/sec: 8.25801
+INFO:tensorflow:train_accuracy = 0.996 (12.109 sec)
+INFO:tensorflow:loss = 0.022046257, step = 23432 (12.109 sec)
+INFO:tensorflow:global_step/sec: 8.28354
+INFO:tensorflow:train_accuracy = 0.99666667 (12.072 sec)
+INFO:tensorflow:loss = 0.0005147812, step = 23532 (12.072 sec)
+INFO:tensorflow:global_step/sec: 8.13739
+INFO:tensorflow:train_accuracy = 0.9957143 (12.289 sec)
+INFO:tensorflow:loss = 0.010904511, step = 23632 (12.289 sec)
+INFO:tensorflow:global_step/sec: 7.53667
+INFO:tensorflow:train_accuracy = 0.99625 (13.268 sec)
+INFO:tensorflow:loss = 0.0012038928, step = 23732 (13.268 sec)
+INFO:tensorflow:global_step/sec: 8.12338
+INFO:tensorflow:train_accuracy = 0.99666667 (12.310 sec)
+INFO:tensorflow:loss = 0.0002907067, step = 23832 (12.310 sec)
+INFO:tensorflow:global_step/sec: 7.95268
+INFO:tensorflow:train_accuracy = 0.997 (12.574 sec)
+INFO:tensorflow:loss = 0.002992282, step = 23932 (12.574 sec)
+INFO:tensorflow:global_step/sec: 6.95121
+INFO:tensorflow:train_accuracy = 0.99727273 (14.386 sec)
+INFO:tensorflow:loss = 0.00066570134, step = 24032 (14.386 sec)
+INFO:tensorflow:global_step/sec: 7.15812
+INFO:tensorflow:train_accuracy = 0.9975 (13.970 sec)
+INFO:tensorflow:loss = 0.000105894964, step = 24132 (13.970 sec)
+INFO:tensorflow:Saving checkpoints for 24231 into /tmp/mnist_model/model.ckpt.
+INFO:tensorflow:Loss for final step: 0.00016191343.
+```
 
 
 
